@@ -561,6 +561,7 @@ or _OPTIONS["with-combined-examples"] then
 		, "39-assao"
 		, "40-svt"
 		, "41-tess"
+		, "42-materials"
 		)
 
 	-- C99 source doesn't compile under WinRT settings
