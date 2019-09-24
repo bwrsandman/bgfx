@@ -98,6 +98,8 @@ namespace bgfx { namespace glsl
 			strReplace(code, "shadow2DEXT", "shadow2D");
 			strReplace(code, "shadow2DProjARB", "shadow2DProj");
 			strReplace(code, "shadow2DProjEXT", "shadow2DProj");
+
+			strReplace(code, "textureArray", "texture");
 		}
 
 		UniformArray uniforms;
