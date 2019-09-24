@@ -5661,6 +5661,7 @@ BX_TRACE("%d, %d, %d, %s", _array, _srgb, _mipAutogen, getName(_format) );
 						else
 						{
 							bx::write(&writer, "#define texture2DArrayLodEXT texture2DArrayLod\n");
+							bx::write(&writer, "#define textureArray texture\n");
 						}
 					}
 
