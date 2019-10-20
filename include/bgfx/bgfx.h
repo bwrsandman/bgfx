@@ -942,6 +942,10 @@ namespace bgfx
 
 		int64_t gpuTimeBegin;               //!< GPU frame begin time.
 		int64_t gpuTimeEnd;                 //!< GPU frame end time.
+		int64_t gpuTimeUpdateIndexBegin;    //!< GPU update index begin time.
+		int64_t gpuTimeUpdateIndexEnd;      //!< GPU update index end time.
+		int64_t gpuTimeUpdateVertexBegin;   //!< GPU update vertex begin time.
+		int64_t gpuTimeUpdateVertexEnd;     //!< GPU update vertex end time.
 		int64_t gpuTimerFreq;               //!< GPU timer frequency.
 
 		int64_t waitRender;                 //!< Time spent waiting for render backend thread to finish issuing

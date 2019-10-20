@@ -6434,18 +6434,40 @@ BX_TRACE("%d, %d, %d, %s", _array, _srgb, _mipAutogen, getName(_format) );
 			frameQueryIdx = m_gpuTimer.begin(BGFX_CONFIG_MAX_VIEWS);
 		}
 
+		uint32_t updateIndexQueryIdx = UINT32_MAX;
+
+		if (m_timerQuerySupport
+			&&  !BX_ENABLED(BX_PLATFORM_OSX) )
+		{
+			updateIndexQueryIdx = m_gpuTimer.begin(BGFX_CONFIG_MAX_VIEWS+1);
+		}
 		if (0 < _render->m_iboffset)
 		{
 			BGFX_PROFILER_SCOPE("bgfx/Update transient index buffer", kColorResource);
 			TransientIndexBuffer* ib = _render->m_transientIb;
 			m_indexBuffers[ib->handle.idx].update(0, _render->m_iboffset, ib->data, true);
 		}
+		if (UINT32_MAX != updateIndexQueryIdx)
+		{
+			m_gpuTimer.end(updateIndexQueryIdx);
+		}
 
+		uint32_t updateVertexQueryIdx = UINT32_MAX;
+
+		if (m_timerQuerySupport
+			&&  !BX_ENABLED(BX_PLATFORM_OSX) )
+		{
+			updateVertexQueryIdx = m_gpuTimer.begin(BGFX_CONFIG_MAX_VIEWS+2);
+		}
 		if (0 < _render->m_vboffset)
 		{
 			BGFX_PROFILER_SCOPE("bgfx/Update transient vertex buffer", kColorResource);
 			TransientVertexBuffer* vb = _render->m_transientVb;
 			m_vertexBuffers[vb->handle.idx].update(0, _render->m_vboffset, vb->data, true);
+		}
+		if (UINT32_MAX != updateVertexQueryIdx)
+		{
+			m_gpuTimer.end(updateVertexQueryIdx);
 		}
 
 		_render->sort();
@@ -7510,8 +7532,14 @@ BX_TRACE("%d, %d, %d, %s", _array, _srgb, _mipAutogen, getName(_format) );
 		perfStats.cpuTimeEnd    = timeEnd;
 		perfStats.cpuTimerFreq  = timerFreq;
 		const TimerQueryGL::Result& result = m_gpuTimer.m_result[BGFX_CONFIG_MAX_VIEWS];
+		const TimerQueryGL::Result& updateIndexResult = m_gpuTimer.m_result[BGFX_CONFIG_MAX_VIEWS+1];
+		const TimerQueryGL::Result& updateVertexResult = m_gpuTimer.m_result[BGFX_CONFIG_MAX_VIEWS+2];
 		perfStats.gpuTimeBegin  = result.m_begin;
 		perfStats.gpuTimeEnd    = result.m_end;
+		perfStats.gpuTimeUpdateIndexBegin  = updateIndexResult.m_begin;
+		perfStats.gpuTimeUpdateIndexEnd    = updateIndexResult.m_end;
+		perfStats.gpuTimeUpdateVertexBegin  = updateVertexResult.m_begin;
+		perfStats.gpuTimeUpdateVertexEnd    = updateVertexResult.m_end;
 		perfStats.gpuTimerFreq  = 1000000000;
 		perfStats.numDraw       = statsKeyType[0];
 		perfStats.numCompute    = statsKeyType[1];

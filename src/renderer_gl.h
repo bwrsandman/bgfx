@@ -1543,7 +1543,7 @@ namespace bgfx { namespace gl
 			bool     m_ready;
 		};
 
-		Result m_result[BGFX_CONFIG_MAX_VIEWS+1];
+		Result m_result[BGFX_CONFIG_MAX_VIEWS+3];
 
 		Query m_query[BGFX_CONFIG_MAX_VIEWS*4];
 		bx::RingBufferControl m_control;
