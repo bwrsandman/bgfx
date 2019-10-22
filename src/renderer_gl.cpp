@@ -7532,6 +7532,8 @@ BX_TRACE("%d, %d, %d, %s", _array, _srgb, _mipAutogen, getName(_format) );
 		Stats& perfStats = _render->m_perfStats;
 		perfStats.cpuTimeBegin  = timeBegin;
 		perfStats.cpuTimeEnd    = timeEnd;
+		perfStats.cpuTimeSortBegin  = timeSortBegin;
+		perfStats.cpuTimeSortEnd    = timeSortEnd;
 		perfStats.cpuTimerFreq  = timerFreq;
 		const TimerQueryGL::Result& result = m_gpuTimer.m_result[BGFX_CONFIG_MAX_VIEWS];
 		const TimerQueryGL::Result& updateIndexResult = m_gpuTimer.m_result[BGFX_CONFIG_MAX_VIEWS+1];
