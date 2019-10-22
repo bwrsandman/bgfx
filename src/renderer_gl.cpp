@@ -6470,7 +6470,9 @@ BX_TRACE("%d, %d, %d, %s", _array, _srgb, _mipAutogen, getName(_format) );
 			m_gpuTimer.end(updateVertexQueryIdx);
 		}
 
+		int64_t timeSortBegin = bx::getHPCounter();
 		_render->sort();
+		int64_t timeSortEnd = bx::getHPCounter();
 
 		RenderDraw currentState;
 		currentState.clear();

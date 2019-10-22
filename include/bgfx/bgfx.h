@@ -938,6 +938,8 @@ namespace bgfx
 		int64_t cpuTimeFrame;               //!< CPU time between two `bgfx::frame` calls.
 		int64_t cpuTimeBegin;               //!< Render thread CPU submit begin time.
 		int64_t cpuTimeEnd;                 //!< Render thread CPU submit end time.
+		int64_t cpuTimeSortBegin;           //!< Render thread CPU sort begin time.
+		int64_t cpuTimeSortEnd;             //!< Render thread CPU sort end time.
 		int64_t cpuTimerFreq;               //!< CPU timer frequency. Timestamps-per-second
 
 		int64_t gpuTimeBegin;               //!< GPU frame begin time.
