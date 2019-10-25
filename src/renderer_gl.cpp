@@ -7273,11 +7273,11 @@ BX_TRACE("%d, %d, %d, %s", _array, _srgb, _mipAutogen, getName(_format) );
 
 								program.bindAttributesEnd();
 
-								if (isValid(draw.m_instanceDataBuffer) )
-								{
-									GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffers[draw.m_instanceDataBuffer.idx].m_id) );
-									program.bindInstanceData(draw.m_instanceDataStride, draw.m_instanceDataOffset);
-								}
+							}
+							if (isValid(draw.m_instanceDataBuffer) )
+							{
+								GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffers[draw.m_instanceDataBuffer.idx].m_id) );
+								program.bindInstanceData(draw.m_instanceDataStride, draw.m_instanceDataOffset);
 							}
 						}
 					}
