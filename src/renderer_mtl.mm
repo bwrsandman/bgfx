@@ -297,7 +297,7 @@ namespace bgfx { namespace mtl
 		{ MTLPixelFormatRGBA32Float,                    MTLPixelFormatInvalid                       }, // RGBA32F
 		{ MTLPixelFormat(40/*B5G6R5Unorm*/),            MTLPixelFormatInvalid                       }, // R5G6B5
 		{ MTLPixelFormat(42/*ABGR4Unorm*/),             MTLPixelFormatInvalid                       }, // RGBA4
-		{ MTLPixelFormat(41/*A1BGR5Unorm*/),            MTLPixelFormatInvalid                       }, // RGB5A1
+		{ MTLPixelFormat(43/*bgr5A1Unorm*/),            MTLPixelFormatInvalid                       }, // RGB5A1
 		{ MTLPixelFormatRGB10A2Unorm,                   MTLPixelFormatInvalid                       }, // RGB10A2
 		{ MTLPixelFormatRG11B10Float,                   MTLPixelFormatInvalid                       }, // RG11B10F
 		{ MTLPixelFormatInvalid,                        MTLPixelFormatInvalid                       }, // UnknownDepth
