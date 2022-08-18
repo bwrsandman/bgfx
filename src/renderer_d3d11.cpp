@@ -6663,7 +6663,7 @@ namespace bgfx { namespace d3d11
 
 			BGFX_D3D11_PROFILER_END();
 		}
-		else if (_render->m_debug & BGFX_DEBUG_TEXT)
+		if (_render->m_debug & BGFX_DEBUG_TEXT)
 		{
 			BGFX_D3D11_PROFILER_BEGIN_LITERAL("debugtext", kColorFrame);
 

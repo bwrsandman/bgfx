@@ -4945,7 +4945,7 @@ namespace bgfx { namespace webgpu
 				rce.PopDebugGroup();
 			}
 		}
-		else if (_render->m_debug & BGFX_DEBUG_TEXT)
+		if (_render->m_debug & BGFX_DEBUG_TEXT)
 		{
 			if (BX_ENABLED(BGFX_CONFIG_DEBUG_ANNOTATION))
 			{

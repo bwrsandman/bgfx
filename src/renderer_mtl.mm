@@ -5040,7 +5040,7 @@ BX_STATIC_ASSERT(BX_COUNTOF(s_accessNames) == Access::Count, "Invalid s_accessNa
 
 			rce.popDebugGroup();
 		}
-		else if (_render->m_debug & BGFX_DEBUG_TEXT)
+		if (_render->m_debug & BGFX_DEBUG_TEXT)
 		{
 			rce.pushDebugGroup("debugtext");
 

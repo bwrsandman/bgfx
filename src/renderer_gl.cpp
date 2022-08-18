@@ -8729,7 +8729,7 @@ namespace bgfx { namespace gl
 
 			BGFX_GL_PROFILER_END();
 		}
-		else if (_render->m_debug & BGFX_DEBUG_TEXT)
+		if (_render->m_debug & BGFX_DEBUG_TEXT)
 		{
 			BGFX_GL_PROFILER_BEGIN_LITERAL("debugtext", kColorFrame);
 
