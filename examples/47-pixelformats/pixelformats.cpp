@@ -243,6 +243,48 @@ bgfx::TextureHandle createTexture(bool convert = false)
     }
   }
 
+  Pixel r;
+  r.r = ((1 << Pixel::rSz) - 1);
+  r.g = 0;
+  r.b = 0;
+  r.a = ((1 << Pixel::aSz) - 1);
+
+  Pixel g;
+  g.r = 0;
+  g.g = ((1 << Pixel::gSz) - 1);
+  g.b = 0;
+  g.a = ((1 << Pixel::aSz) - 1);
+
+  Pixel b;
+  b.r = 0;
+  b.g = 0;
+  b.b = ((1 << Pixel::bSz) - 1);
+  b.a = ((1 << Pixel::aSz) - 1);
+
+  for (y = 0; y < 16; ++y)
+  {
+    for (x = 0; x < 16; ++x)
+    {
+      texbuf[x + (TEXTURE_SIZE - 36 + y) * TEXTURE_SIZE] = r;
+      texbuf[x + 16 + (TEXTURE_SIZE - 36 + y) * TEXTURE_SIZE] = g;
+      texbuf[x + 32 + (TEXTURE_SIZE - 36 + y) * TEXTURE_SIZE] = b;
+    }
+  }
+
+  for (y = 0; y < 16; ++y)
+  {
+    for (x = 0; x < 48; ++x)
+    {
+      Pixel a;
+      a.r = ((1 << Pixel::rSz) - 1);
+      a.g = ((1 << Pixel::gSz) - 1);
+      a.b = ((1 << Pixel::bSz) - 1);
+      a.a = bx::round((float)(48 - x) / 48.0f * ((1 << Pixel::aSz) - 1));
+
+      texbuf[x + (TEXTURE_SIZE - 20 + y) * TEXTURE_SIZE] = a;
+    }
+  }
+
   if (convert)
   {
     const bgfx::Memory* mem2 = bgfx::alloc(TEXTURE_SIZE * TEXTURE_SIZE * sizeof(RGBA8Pixel));
