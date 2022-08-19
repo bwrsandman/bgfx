@@ -184,8 +184,7 @@ constexpr const char* FormatStrings[] =
 };
 
 /// http://www.rosettacode.org/wiki/Color_wheel#C.2B.2B
-template<class Pixel>
-Pixel hsvToRgb(float h, float s, float v, float a) {
+void hsvToRgb(float h, float s, float v, float& r, float& g, float& b) {
   if (h < 0.0f)
   {
     h += 2.0f * bx::kPi;
@@ -194,7 +193,6 @@ Pixel hsvToRgb(float h, float s, float v, float a) {
   float c = s * v;
   float x = c * (1 - bx::abs(bx::mod(hp, 2.0f) - 1));
   float m = v - c;
-  float r = 0, g = 0, b = 0;
   if (hp <= 1) {
     r = c;
     g = x;
@@ -217,14 +215,6 @@ Pixel hsvToRgb(float h, float s, float v, float a) {
   r += m;
   g += m;
   b += m;
-
-  Pixel pixel;
-  pixel.r = bx::round(r * ((1 << Pixel::rSz) - 1));
-  pixel.g = bx::round(g * ((1 << Pixel::gSz) - 1));
-  pixel.b = bx::round(b * ((1 << Pixel::bSz) - 1));
-  pixel.a = bx::round(a * ((1 << Pixel::aSz) - 1));
-
-  return pixel;
 }
 
 template<class Pixel>
@@ -241,8 +231,15 @@ bgfx::TextureHandle createTexture(bool convert = false)
       float distance = bx::min(1.0f
               , bx::sqrt( (float)( (x - HALF_TEXTURE_SIZE) * (x - HALF_TEXTURE_SIZE) + (y - HALF_TEXTURE_SIZE) * (y - HALF_TEXTURE_SIZE) ) ) / (float)HALF_TEXTURE_SIZE
       );
-      float angle = bx::atan2((y - HALF_TEXTURE_SIZE), (x - HALF_TEXTURE_SIZE));
-      texbuf[x + y * TEXTURE_SIZE] = hsvToRgb<Pixel>(angle, 1.0f, 1.0f, 1.0f - distance);
+      float angle = bx::atan2((float)(y - HALF_TEXTURE_SIZE), (float)(x - HALF_TEXTURE_SIZE));
+      float r = 0, g = 0, b = 0;
+      float a = 1.0f - distance;
+      hsvToRgb(angle, 1.0f, 1.0f, r, g, b);
+
+      texbuf[x + y * TEXTURE_SIZE].r = bx::round(r * ((1 << Pixel::rSz) - 1));
+      texbuf[x + y * TEXTURE_SIZE].g = bx::round(g * ((1 << Pixel::gSz) - 1));
+      texbuf[x + y * TEXTURE_SIZE].b = bx::round(b * ((1 << Pixel::bSz) - 1));
+      texbuf[x + y * TEXTURE_SIZE].a = bx::round(a * ((1 << Pixel::aSz) - 1));
     }
   }
 
