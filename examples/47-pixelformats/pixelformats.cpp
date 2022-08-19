@@ -249,35 +249,35 @@ struct RGBA32FPixel {
     float b;
     float a;
 };
-struct R5G6B5Pixel {
-    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R5G6B5;
+struct B5G6R5Pixel {
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::B5G6R5;
     static constexpr const size_t rSz = 5;
     static constexpr const size_t gSz = 6;
     static constexpr const size_t bSz = 5;
-    uint16_t r : rSz;
-    uint16_t g : gSz;
     uint16_t b : bSz;
+    uint16_t g : gSz;
+    uint16_t r : rSz;
 };
-struct RGBA4Pixel {
-    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA4;
+struct BGRA4Pixel {
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::BGRA4;
     static constexpr const size_t rSz = 4;
     static constexpr const size_t gSz = 4;
     static constexpr const size_t bSz = 4;
     static constexpr const size_t aSz = 4;
-    uint16_t r : rSz;
-    uint16_t g : gSz;
     uint16_t b : bSz;
+    uint16_t g : gSz;
+    uint16_t r : rSz;
     uint16_t a : aSz;
 };
-struct RGB5A1Pixel {
-    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGB5A1;
+struct BGR5A1Pixel {
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::BGR5A1;
     static constexpr const size_t rSz = 5;
     static constexpr const size_t gSz = 5;
     static constexpr const size_t bSz = 5;
     static constexpr const size_t aSz = 1;
-    uint16_t r : rSz;
-    uint16_t g : gSz;
     uint16_t b : bSz;
+    uint16_t g : gSz;
+    uint16_t r : rSz;
     uint16_t a : aSz;
 };
 struct RGB10A2Pixel {
@@ -554,9 +554,9 @@ public:
     insertTextureFormat(RGBA16F, true);
     insertTextureFormat(RGBA16S, false);
     insertTextureFormat(RGBA32F, true);
-    insertTextureFormat(R5G6B5, false);
-    insertTextureFormat(RGBA4, false);
-    insertTextureFormat(RGB5A1, false);
+    insertTextureFormat(B5G6R5, false);
+    insertTextureFormat(BGRA4, false);
+    insertTextureFormat(BGR5A1, false);
     insertTextureFormat(RGB10A2, false);
 
     #undef insertTextureFormat
