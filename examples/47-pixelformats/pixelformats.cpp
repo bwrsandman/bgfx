@@ -9,6 +9,8 @@
 
 #include <bx/math.h>
 
+#include <type_traits>
+
 namespace
 {
 
@@ -98,38 +100,186 @@ void renderScreenSpaceQuad(uint8_t _view, bgfx::ProgramHandle _program, float _x
 const int TEXTURE_SIZE = 256;
 const int HALF_TEXTURE_SIZE = TEXTURE_SIZE / 2;
 
+#pragma pack(push, 1)
+struct A8Pixel {
+    static constexpr const char* str = "A8";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::A8;
+    static constexpr const size_t aSz = 8;
+    uint8_t a : aSz;
+};
+struct R8Pixel {
+    static constexpr const char* str = "R8";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R8;
+    static constexpr const size_t rSz = 8;
+    uint8_t r : rSz;
+};
+struct R8SPixel {
+    static constexpr const char* str = "R8S";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R8S;
+    static constexpr const size_t rSz = 8;
+    int8_t r : rSz;
+};
+struct R16Pixel {
+    static constexpr const char* str = "R16";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R16;
+    static constexpr const size_t rSz = 16;
+    uint16_t r : rSz;
+};
+struct R16FPixel {
+    static constexpr const char* str = "R16F";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R16F;
+    static constexpr const size_t rSz = 16;
+    uint16_t r : rSz;
+};
+struct R16SPixel {
+    static constexpr const char* str = "R16S";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R16S;
+    static constexpr const size_t rSz = 16;
+    int16_t r : rSz;
+};
+struct R32FPixel {
+    static constexpr const char* str = "R32F";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R32F;
+    static constexpr const size_t rSz = 32;
+    float r;
+};
+struct RG8Pixel {
+    static constexpr const char* str = "RG8";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RG8;
+    static constexpr const size_t rSz = 8;
+    static constexpr const size_t gSz = 8;
+    uint8_t r : rSz;
+    uint8_t g : gSz;
+};
+struct RGB8Pixel {
+    static constexpr const char* str = "RGB8";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGB8;
+    static constexpr const size_t rSz = 8;
+    static constexpr const size_t gSz = 8;
+    static constexpr const size_t bSz = 8;
+    uint8_t r : rSz;
+    uint8_t g : gSz;
+    uint8_t b : bSz;
+};
+struct RGB8SPixel {
+    static constexpr const char* str = "RGB8S";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGB8S;
+    static constexpr const size_t rSz = 8;
+    static constexpr const size_t gSz = 8;
+    static constexpr const size_t bSz = 8;
+    int8_t r : rSz;
+    int8_t g : gSz;
+    int8_t b : bSz;
+};
+struct RGB9E5FPixel {
+    static constexpr const char* str = "RGB9E5";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGB9E5F;
+    static constexpr const size_t rSz = 9;
+    static constexpr const size_t gSz = 9;
+    static constexpr const size_t bSz = 9;
+    static constexpr const size_t aSz = 5;
+    uint32_t r : rSz;
+    uint32_t g : gSz;
+    uint32_t b : bSz;
+    uint32_t a : aSz; // shared exponent
+};
 struct RGBA8Pixel {
     static constexpr const char* str = "RGBA8";
     static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA8;
-    static constexpr const bimg::UnpackFn unpackFn = bx::unpackRgba8;
     static constexpr const size_t rSz = 8;
     static constexpr const size_t gSz = 8;
     static constexpr const size_t bSz = 8;
     static constexpr const size_t aSz = 8;
-    uint32_t r : rSz;
-    uint32_t g : gSz;
-    uint32_t b : bSz;
-    uint32_t a : aSz;
+    uint8_t r : rSz;
+    uint8_t g : gSz;
+    uint8_t b : bSz;
+    uint8_t a : aSz;
 };
-
 struct BGRA8Pixel {
     static constexpr const char* str = "BGRA8";
     static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::BGRA8;
-    static constexpr const bimg::UnpackFn unpackFn = bx::unpackBgra8;
     static constexpr const size_t rSz = 8;
     static constexpr const size_t gSz = 8;
     static constexpr const size_t bSz = 8;
     static constexpr const size_t aSz = 8;
-    uint32_t b : bSz;
-    uint32_t g : gSz;
-    uint32_t r : rSz;
-    uint32_t a : aSz;
+    uint8_t b : bSz;
+    uint8_t g : gSz;
+    uint8_t r : rSz;
+    uint8_t a : aSz;
 };
-
+struct RGBA8SPixel {
+    static constexpr const char* str = "RGBA8S";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA8S;
+    static constexpr const size_t rSz = 8;
+    static constexpr const size_t gSz = 8;
+    static constexpr const size_t bSz = 8;
+    static constexpr const size_t aSz = 8;
+    int8_t r : rSz;
+    int8_t g : gSz;
+    int8_t b : bSz;
+    int8_t a : aSz;
+};
+struct RGBA16Pixel {
+    static constexpr const char* str = "RGBA16";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA16;
+    static constexpr const size_t rSz = 16;
+    static constexpr const size_t gSz = 16;
+    static constexpr const size_t bSz = 16;
+    static constexpr const size_t aSz = 16;
+    uint16_t r : rSz;
+    uint16_t g : gSz;
+    uint16_t b : bSz;
+    uint16_t a : aSz;
+};
+struct RGBA16FPixel {
+    static constexpr const char* str = "RGBA16F";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA16F;
+    static constexpr const size_t rSz = 16;
+    static constexpr const size_t gSz = 16;
+    static constexpr const size_t bSz = 16;
+    static constexpr const size_t aSz = 16;
+    uint16_t r : rSz;
+    uint16_t g : gSz;
+    uint16_t b : bSz;
+    uint16_t a : aSz;
+};
+struct RGBA16SPixel {
+    static constexpr const char* str = "RGBA16S";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA16S;
+    static constexpr const size_t rSz = 16;
+    static constexpr const size_t gSz = 16;
+    static constexpr const size_t bSz = 16;
+    static constexpr const size_t aSz = 16;
+    int16_t r : rSz;
+    int16_t g : gSz;
+    int16_t b : bSz;
+    int16_t a : aSz;
+};
+struct RGBA32FPixel {
+    static constexpr const char* str = "RGBA32F";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA32F;
+    static constexpr const size_t rSz = 32;
+    static constexpr const size_t gSz = 32;
+    static constexpr const size_t bSz = 32;
+    static constexpr const size_t aSz = 32;
+    float r;
+    float g;
+    float b;
+    float a;
+};
+struct R5G6B5Pixel {
+    static constexpr const char* str = "R5G6B5";
+    static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::R5G6B5;
+    static constexpr const size_t rSz = 5;
+    static constexpr const size_t gSz = 6;
+    static constexpr const size_t bSz = 5;
+    uint16_t r : rSz;
+    uint16_t g : gSz;
+    uint16_t b : bSz;
+};
 struct RGBA4Pixel {
     static constexpr const char* str = "RGBA4";
     static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGBA4;
-    static constexpr const bimg::UnpackFn unpackFn = bx::unpackRgba4;
     static constexpr const size_t rSz = 4;
     static constexpr const size_t gSz = 4;
     static constexpr const size_t bSz = 4;
@@ -139,11 +289,9 @@ struct RGBA4Pixel {
     uint16_t b : bSz;
     uint16_t a : aSz;
 };
-
 struct RGB5A1Pixel {
     static constexpr const char* str = "RGB5A1";
     static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGB5A1;
-    static constexpr const bimg::UnpackFn unpackFn = bx::unpackRgb5a1;
     static constexpr const size_t rSz = 5;
     static constexpr const size_t gSz = 5;
     static constexpr const size_t bSz = 5;
@@ -153,11 +301,9 @@ struct RGB5A1Pixel {
     uint16_t b : bSz;
     uint16_t a : aSz;
 };
-
 struct RGB10A2Pixel {
     static constexpr const char* str = "RGB10A2";
     static constexpr const bgfx::TextureFormat::Enum format = bgfx::TextureFormat::RGB10A2;
-    static constexpr const bimg::UnpackFn unpackFn = bx::unpackRgb10A2;
     static constexpr const size_t rSz = 10;
     static constexpr const size_t gSz = 10;
     static constexpr const size_t bSz = 10;
@@ -167,20 +313,32 @@ struct RGB10A2Pixel {
     uint32_t b : bSz;
     uint32_t a : aSz;
 };
+#pragma pack(pop)
 
 constexpr const char* FormatStrings[] =
 {
-  RGBA8Pixel::str,
+  A8Pixel::str,
+  R8Pixel::str,
+  R8SPixel::str,
+  R16Pixel::str,
+  R16FPixel::str,
+  R16SPixel::str,
+  R32FPixel::str,
+  RG8Pixel::str,
+  RGB8Pixel::str,
+  RGB8SPixel::str,
+  RGB9E5FPixel::str,
   BGRA8Pixel::str,
+  RGBA8Pixel::str,
+  RGBA8SPixel::str,
+  RGBA16Pixel::str,
+  RGBA16FPixel::str,
+  RGBA16SPixel::str,
+  RGBA32FPixel::str,
+  R5G6B5Pixel::str,
   RGBA4Pixel::str,
   RGB5A1Pixel::str,
   RGB10A2Pixel::str,
-
-  "imageConvert",
-  "imageConvert",
-  "imageConvert",
-  "imageConvert",
-  "imageConvert",
 };
 
 /// http://www.rosettacode.org/wiki/Color_wheel#C.2B.2B
@@ -217,8 +375,106 @@ void hsvToRgb(float h, float s, float v, float& r, float& g, float& b) {
   b += m;
 }
 
-template<class Pixel>
-bgfx::TextureHandle createTexture(bool convert = false)
+// https://en.cppreference.com/w/cpp/experimental/is_detected
+namespace detail {
+    template <class Default, class AlwaysVoid,
+            template<class...> class Op, class... Args>
+    struct detector {
+        using value_t = std::false_type;
+        using type = Default;
+    };
+
+    template <class Default, template<class...> class Op, class... Args>
+    struct detector<Default, std::void_t<Op<Args...>>, Op, Args...> {
+        using value_t = std::true_type;
+        using type = Op<Args...>;
+    };
+
+} // namespace detail
+
+struct nonesuch{};
+
+template <template<class...> class Op, class... Args>
+using isDetected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
+
+template <typename T>
+using hasRed = decltype(T::r);
+
+template <typename T>
+using hasGreen = decltype(T::g);
+
+template <typename T>
+using hasBlue = decltype(T::b);
+
+template <typename T>
+using hasAlpha = decltype(T::a);
+
+template<class Pixel, bool typeFloat>
+Pixel ConstructPixel(float r, float g, float b, float a)
+{
+  Pixel p;
+  if constexpr (isDetected<hasRed, Pixel>::value)
+  {
+    if constexpr (typeFloat)
+    {
+      if constexpr (sizeof(decltype(Pixel::r)) == sizeof(uint16_t))
+        p.r = bx::halfFromFloat(r);
+      else
+        p.r = r;
+    }
+    else if constexpr (std::is_unsigned<decltype(Pixel::r)>())
+      p.r = bx::round(r * ((1 << Pixel::rSz) - 1));
+    else
+      p.r = bx::round(r * ((1 << (Pixel::rSz - 1)) - 1));
+  }
+  if constexpr (isDetected<hasGreen, Pixel>::value)
+  {
+    if constexpr (typeFloat)
+    {
+      if constexpr (sizeof(decltype(Pixel::g)) == sizeof(uint16_t))
+        p.g = bx::halfFromFloat(g);
+      else
+        p.g = g;
+    }
+    else if constexpr (std::is_unsigned<decltype(Pixel::g)>())
+      p.g = bx::round(g * ((1 << Pixel::gSz) - 1));
+    else
+      p.g = bx::round(g * ((1 << (Pixel::gSz - 1)) - 1));
+  }
+  if constexpr (isDetected<hasBlue, Pixel>::value)
+  {
+    if constexpr (typeFloat)
+    {
+      if constexpr (sizeof(decltype(Pixel::b)) == sizeof(uint16_t))
+        p.b = bx::halfFromFloat(b);
+      else
+        p.b = b;
+    }
+    else if constexpr (std::is_unsigned<decltype(Pixel::b)>())
+      p.b = bx::round(b * ((1 << Pixel::bSz) - 1));
+    else
+      p.b = bx::round(b * ((1 << (Pixel::bSz - 1)) - 1));
+  }
+  if constexpr (isDetected<hasAlpha, Pixel>::value)
+  {
+    if constexpr (typeFloat)
+    {
+      if constexpr (sizeof(decltype(Pixel::a)) == sizeof(uint16_t))
+        p.a = bx::halfFromFloat(a);
+      else
+        p.a = a;
+    }
+    else if constexpr (std::is_unsigned<decltype(Pixel::a)>())
+      p.a = bx::round(a * ((1 << Pixel::aSz) - 1));
+    else
+      p.a = bx::round(a * ((1 << (Pixel::aSz - 1)) - 1));
+  }
+
+  return p;
+}
+
+template<class Pixel, bool typeFloat = false>
+bgfx::TextureHandle createTexture()
 {
   const bgfx::Memory* mem = bgfx::alloc(TEXTURE_SIZE * TEXTURE_SIZE * sizeof(Pixel));
   Pixel* texbuf = (Pixel*)mem->data;
@@ -226,40 +482,23 @@ bgfx::TextureHandle createTexture(bool convert = false)
   int x, y;
   for (y = 0 ; y < TEXTURE_SIZE; ++y)
   {
-    for (x = 0 ; x < TEXTURE_SIZE; ++x)
+    for (x = 0; x < TEXTURE_SIZE; ++x)
     {
-      float distance = bx::min(1.0f
-              , bx::sqrt( (float)( (x - HALF_TEXTURE_SIZE) * (x - HALF_TEXTURE_SIZE) + (y - HALF_TEXTURE_SIZE) * (y - HALF_TEXTURE_SIZE) ) ) / (float)HALF_TEXTURE_SIZE
+      float distance = bx::min(1.0f, bx::sqrt((float) ((x - HALF_TEXTURE_SIZE) * (x - HALF_TEXTURE_SIZE) +
+                                                       (y - HALF_TEXTURE_SIZE) * (y - HALF_TEXTURE_SIZE))) /
+                                     (float) HALF_TEXTURE_SIZE
       );
-      float angle = bx::atan2((float)(y - HALF_TEXTURE_SIZE), (float)(x - HALF_TEXTURE_SIZE));
+      float angle = bx::atan2((float) (y - HALF_TEXTURE_SIZE), (float) (x - HALF_TEXTURE_SIZE));
       float r = 0, g = 0, b = 0;
       float a = 1.0f - distance;
-      hsvToRgb(angle, 1.0f, 1.0f, r, g, b);
-
-      texbuf[x + y * TEXTURE_SIZE].r = bx::round(r * ((1 << Pixel::rSz) - 1));
-      texbuf[x + y * TEXTURE_SIZE].g = bx::round(g * ((1 << Pixel::gSz) - 1));
-      texbuf[x + y * TEXTURE_SIZE].b = bx::round(b * ((1 << Pixel::bSz) - 1));
-      texbuf[x + y * TEXTURE_SIZE].a = bx::round(a * ((1 << Pixel::aSz) - 1));
+      hsvToRgb(angle, 1.0f, 1.0f - distance, r, g, b);
+      texbuf[x + y * TEXTURE_SIZE] = ConstructPixel<Pixel, typeFloat>(r, g, b, a);
     }
   }
 
-  Pixel r;
-  r.r = ((1 << Pixel::rSz) - 1);
-  r.g = 0;
-  r.b = 0;
-  r.a = ((1 << Pixel::aSz) - 1);
-
-  Pixel g;
-  g.r = 0;
-  g.g = ((1 << Pixel::gSz) - 1);
-  g.b = 0;
-  g.a = ((1 << Pixel::aSz) - 1);
-
-  Pixel b;
-  b.r = 0;
-  b.g = 0;
-  b.b = ((1 << Pixel::bSz) - 1);
-  b.a = ((1 << Pixel::aSz) - 1);
+  Pixel r = ConstructPixel<Pixel, typeFloat>(1.0f, 0.0f, 0.0f, 1.0f);
+  Pixel g = ConstructPixel<Pixel, typeFloat>(0.0f, 1.0f, 0.0f, 1.0f);
+  Pixel b = ConstructPixel<Pixel, typeFloat>(0.0f, 0.0f, 1.0f, 1.0f);
 
   for (y = 0; y < 16; ++y)
   {
@@ -271,26 +510,16 @@ bgfx::TextureHandle createTexture(bool convert = false)
     }
   }
 
-  for (y = 0; y < 16; ++y)
+  if constexpr (isDetected<hasAlpha, Pixel>::value)
   {
-    for (x = 0; x < 48; ++x)
+    for (y = 0; y < 16; ++y)
     {
-      Pixel a;
-      a.r = ((1 << Pixel::rSz) - 1);
-      a.g = ((1 << Pixel::gSz) - 1);
-      a.b = ((1 << Pixel::bSz) - 1);
-      a.a = bx::round((float)(48 - x) / 48.0f * ((1 << Pixel::aSz) - 1));
-
-      texbuf[x + (TEXTURE_SIZE - 20 + y) * TEXTURE_SIZE] = a;
+      for (x = 0; x < 48; ++x)
+      {
+        Pixel a = ConstructPixel<Pixel, typeFloat>(1.0f, 1.0f, 1.0f, (float) (48 - x) / 48.0f);
+        texbuf[x + (TEXTURE_SIZE - 20 + y) * TEXTURE_SIZE] = a;
+      }
     }
-  }
-
-  if (convert)
-  {
-    const bgfx::Memory* mem2 = bgfx::alloc(TEXTURE_SIZE * TEXTURE_SIZE * sizeof(RGBA8Pixel));
-    bx::memSet(mem2->data, 0xff, mem2->size);
-    bimg::imageConvert(mem2->data, sizeof(RGBA8Pixel) * 8, bx::packRgba8, mem->data, sizeof(Pixel) * 8, Pixel::unpackFn, TEXTURE_SIZE, TEXTURE_SIZE, 1, TEXTURE_SIZE * sizeof(Pixel), TEXTURE_SIZE * sizeof(RGBA8Pixel));
-    mem = mem2;
   }
 
   const uint32_t flags = 0
@@ -299,7 +528,7 @@ bgfx::TextureHandle createTexture(bool convert = false)
                          | BGFX_SAMPLER_MIN_POINT
                          | BGFX_SAMPLER_MAG_POINT
   ;
-  bgfx::TextureHandle handle = bgfx::createTexture2D(TEXTURE_SIZE, TEXTURE_SIZE, false, 1, convert ? RGBA8Pixel::format : Pixel::format, flags, mem);
+  bgfx::TextureHandle handle = bgfx::createTexture2D(TEXTURE_SIZE, TEXTURE_SIZE, false, 1, Pixel::format, flags, mem);
   bgfx::setName(handle, Pixel::str);
   return handle;
 }
@@ -348,16 +577,28 @@ public:
 		// Create program from shaders.
 		m_program = loadProgram("vs_pixelformats", "fs_pixelformats");
 
-    m_textures[0] = createTexture<RGBA8Pixel>();
-    m_textures[1] = createTexture<BGRA8Pixel>();
-    m_textures[2] = createTexture<RGBA4Pixel>();
-    m_textures[3] = createTexture<RGB5A1Pixel>();
-    m_textures[4] = createTexture<RGB10A2Pixel>();
-    m_textures[5] = createTexture<RGBA8Pixel>(true);
-    m_textures[6] = createTexture<BGRA8Pixel>(true);
-    m_textures[7] = createTexture<RGBA4Pixel>(true);
-    m_textures[8] = createTexture<RGB5A1Pixel>(true);
-    m_textures[9] = createTexture<RGB10A2Pixel>(true);
+    m_textures[0] = createTexture<A8Pixel>();
+    m_textures[1] = createTexture<R8Pixel>();
+    m_textures[2] = createTexture<R8SPixel>();
+    m_textures[3] = createTexture<R16Pixel>();
+    m_textures[4] = createTexture<R16FPixel, true>();
+    m_textures[5] = createTexture<R16SPixel>();
+    m_textures[6] = createTexture<R32FPixel, true>();
+    m_textures[7] = createTexture<RG8Pixel>();
+    m_textures[8] = createTexture<RGB8Pixel>();
+    m_textures[9] = createTexture<RGB8SPixel>();
+    m_textures[10] = createTexture<RGB9E5FPixel>();
+    m_textures[11] = createTexture<BGRA8Pixel>();
+    m_textures[12] = createTexture<RGBA8Pixel>();
+    m_textures[13] = createTexture<RGBA8SPixel>();
+    m_textures[14] = createTexture<RGBA16Pixel>();
+    m_textures[15] = createTexture<RGBA16FPixel, true>();
+    m_textures[16] = createTexture<RGBA16SPixel>();
+    m_textures[17] = createTexture<RGBA32FPixel, true>();
+    m_textures[18] = createTexture<R5G6B5Pixel>();
+    m_textures[19] = createTexture<RGBA4Pixel>();
+    m_textures[20] = createTexture<RGB5A1Pixel>();
+    m_textures[21] = createTexture<RGB10A2Pixel>();
 
 		for (int i = 0; i < sizeof(FormatStrings) / sizeof(FormatStrings[0]); ++i)
 		{
@@ -438,8 +679,8 @@ public:
 				bgfx::setTexture(0, s_texColor, m_textures[currentTexture]);
 				renderScreenSpaceQuad(viewId, m_program, 0.0f, 0.0f, 1280.0f, 720.0f);
 				uint16_t textW = w / 8;
-				uint16_t textH = h / 16;
-				bgfx::dbgTextPrintf(x * textW + (offsetX + textW) / 8, y * textH + (offsetY + textH) / 16, 0x0f, FormatStrings[i]);
+				uint16_t textH = h / 15;
+				bgfx::dbgTextPrintf(x * textW + (offsetX + textW) / 8, y * textH + (offsetY + textH) / 15, 0x0f, FormatStrings[i]);
 			}
 
 			// Advance to next frame. Rendering thread will be kicked to
