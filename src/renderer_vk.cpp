@@ -9023,7 +9023,7 @@ VK_DESTROY
 
 			BGFX_VK_PROFILER_END();
 		}
-		else if (_render->m_debug & BGFX_DEBUG_TEXT)
+		if (_render->m_debug & BGFX_DEBUG_TEXT)
 		{
 			BGFX_VK_PROFILER_BEGIN_LITERAL("debugtext", kColorFrame);
 
