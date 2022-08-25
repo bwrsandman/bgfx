@@ -288,7 +288,7 @@ namespace bgfx { namespace gl
 		{ GL_RGBA32UI,                                 GL_ZERO,                                      RGBA_INTEGER,                                GL_RGBA_INTEGER,                             GL_UNSIGNED_INT,                 false, { $_, $_, $_, $_ } }, // RGBA32U
 		{ GL_RGBA32F,                                  GL_ZERO,                                      GL_RGBA,                                     GL_RGBA,                                     GL_FLOAT,                        false, { $_, $_, $_, $_ } }, // RGBA32F
 		{ GL_RGB565,                                   GL_ZERO,                                      GL_RGB,                                      GL_RGB,                                      GL_UNSIGNED_SHORT_5_6_5,         false, { $_, $_, $_, $_ } }, // B5G6R5
-		{ GL_RGB565,                                   GL_ZERO,                                      GL_RGB,                                      GL_RGB,                                      GL_UNSIGNED_SHORT_5_6_5,         false, { $B, $_, $R, $_ } }, // R5G6B5
+		{ GL_RGB565,                                   GL_ZERO,                                      GL_RGB,                                      GL_RGB,                                      GL_UNSIGNED_SHORT_5_6_5,         false, { $_, $_, $_, $_ } }, // R5G6B5
 		{ GL_RGBA4,                                    GL_ZERO,                                      GL_BGRA,                                     GL_BGRA,                                     GL_UNSIGNED_SHORT_4_4_4_4_REV,   false, { $_, $_, $_, $_ } }, // BGRA4
 		{ GL_RGBA4,                                    GL_ZERO,                                      GL_RGBA,                                     GL_RGBA,                                     GL_UNSIGNED_SHORT_4_4_4_4_REV,   false, { $_, $_, $_, $_ } }, // RGBA4
 		{ GL_RGB5_A1,                                  GL_ZERO,                                      GL_BGRA,                                     GL_BGRA,                                     GL_UNSIGNED_SHORT_1_5_5_5_REV,   false, { $_, $_, $_, $_ } }, // BGR5A1
@@ -2542,6 +2542,12 @@ namespace bgfx { namespace gl
 							setTextureFormatSrgb(TextureFormat::RGB8, GL_SRGB_EXT, GL_SRGB_EXT);
 						}
 
+						if (s_extension[Extension::EXT_texture_swizzle].m_supported)
+						{
+							s_textureFormat[TextureFormat::R5G6B5].m_mapping[0] = GL_BLUE;
+							s_textureFormat[TextureFormat::R5G6B5].m_mapping[2] = GL_RED;
+						}
+
 						if (s_extension[Extension::OES_texture_half_float].m_supported
 						||  s_extension[Extension::OES_texture_float     ].m_supported)
 						{
@@ -2583,6 +2589,13 @@ namespace bgfx { namespace gl
 						setTextureFormat(TextureFormat::D32F,  GL_DEPTH_COMPONENT32F, GL_DEPTH_COMPONENT, GL_FLOAT);
 						setTextureFormat(TextureFormat::D0S8,  GL_STENCIL_INDEX8, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE); // Only works as renderbuffer, not as texture
 					}
+				}
+				else
+				{
+#ifdef GL_BGR
+					setTextureFormat(TextureFormat::R5G6B5, GL_BGR,  GL_BGR,  GL_UNSIGNED_SHORT_5_6_5);
+					setTextureFormatSrgb(TextureFormat::R5G6B5, GL_ZERO,  GL_BGR);
+#endif
 				}
 
 				if (BX_ENABLED(BGFX_CONFIG_RENDERER_OPENGL)
