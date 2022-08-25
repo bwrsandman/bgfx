@@ -8824,7 +8824,7 @@ namespace bgfx { namespace gl
 	RendererContextI* rendererCreate(const Init& _init)
 	{
 		BX_UNUSED(_init);
-		return NULL;
+		return NULL
 	}
 
 	void rendererDestroy()
